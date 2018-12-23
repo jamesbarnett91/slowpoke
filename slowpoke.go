@@ -10,7 +10,7 @@ import (
 
 type Slowpoke struct {
 	conn       net.Conn
-	targetAddr string
+	targetAddr *net.TCPAddr
 	latency    time.Duration
 	bufferSize int
 	isClosed   bool
@@ -18,7 +18,7 @@ type Slowpoke struct {
 	logger     *logging.Logger
 }
 
-func New(conn net.Conn, targetAddr string, latency time.Duration, bufferSize int, logger *logging.Logger) *Slowpoke {
+func New(conn net.Conn, targetAddr *net.TCPAddr, latency time.Duration, bufferSize int, logger *logging.Logger) *Slowpoke {
 	return &Slowpoke{
 		conn:       conn,
 		targetAddr: targetAddr,
@@ -32,9 +32,8 @@ func New(conn net.Conn, targetAddr string, latency time.Duration, bufferSize int
 
 func (s *Slowpoke) StartTransfer() {
 	defer s.conn.Close()
-	target, err := net.Dial("tcp", s.targetAddr)
+	target, err := net.DialTCP("tcp", nil, s.targetAddr)
 	if err != nil {
-		// TODO validate target addr before this point
 		s.logger.Errorf("Failed to connect to target address %s:\n%v", s.targetAddr, err)
 		return
 	}
