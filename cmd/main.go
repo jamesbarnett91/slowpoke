@@ -19,6 +19,7 @@ var opts struct {
 	Port          int           `short:"p" long:"port" description:"TODO" required:"true"`
 	Verbose       []bool        `short:"v" long:"verbose" description:"TODO"`
 	Latency       time.Duration `short:"l" long:"latency" default:"0ms" description:"TODO"`
+	BufferSize    int           `short:"b" long:"buffer" default:"1500" description:"TODO"`
 }
 
 func init() {
@@ -48,8 +49,8 @@ func configureLogger() {
 }
 
 func main() {
-	log.Infof("Proxying from :%d to %s with latency of %s", opts.Port, opts.TargetAddress, opts.Latency)
-
+	log.Infof("Proxying between :%d and %s with %s of latency", opts.Port, opts.TargetAddress, opts.Latency)
+	log.Debugf("Transfer buffer size set to %d bytes", opts.BufferSize)
 	listener := getListener(opts.Port)
 	waitForClients(listener)
 }
@@ -74,7 +75,7 @@ func waitForClients(listener net.Listener) {
 		}
 		log.Infof("Accepted connection from client %v\n", client.RemoteAddr())
 
-		s := slowpoke.New(client, opts.TargetAddress, opts.Latency, log)
+		s := slowpoke.New(client, opts.TargetAddress, opts.Latency, opts.BufferSize, log)
 
 		go s.StartTransfer()
 	}

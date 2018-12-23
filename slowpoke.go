@@ -12,16 +12,18 @@ type Slowpoke struct {
 	conn       net.Conn
 	targetAddr string
 	latency    time.Duration
+	bufferSize int
 	isClosed   bool
 	close      chan bool
 	logger     *logging.Logger
 }
 
-func New(conn net.Conn, targetAddr string, latency time.Duration, logger *logging.Logger) *Slowpoke {
+func New(conn net.Conn, targetAddr string, latency time.Duration, bufferSize int, logger *logging.Logger) *Slowpoke {
 	return &Slowpoke{
 		conn:       conn,
 		targetAddr: targetAddr,
 		latency:    latency,
+		bufferSize: bufferSize,
 		isClosed:   false,
 		close:      make(chan bool),
 		logger:     logger,
@@ -47,13 +49,12 @@ func (s *Slowpoke) StartTransfer() {
 	s.logger.Infof("Connection between client %s and target %s closed", s.conn.RemoteAddr(), target.RemoteAddr())
 }
 
-func createBuffer() []byte {
-	// TODO configurable
-	return make([]byte, 1500)
+func (s *Slowpoke) createBuffer() []byte {
+	return make([]byte, s.bufferSize)
 }
 
 func (s *Slowpoke) transferWithLatency(source net.Conn, target net.Conn) {
-	byteBuffer := createBuffer()
+	byteBuffer := s.createBuffer()
 
 	var transferDirection string
 	// If the data source is the client then we are sending
