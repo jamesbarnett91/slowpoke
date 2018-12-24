@@ -21,7 +21,7 @@ deploy:
   file:
     - slowpoke-linux-amd64
     - slowpoke-windows-amd64.exe
-    - slowpoke-darwim-amd64
+    - slowpoke-darwin-amd64
   skip_cleanup: true
   on:
     tags: true
