@@ -19,9 +19,9 @@ deploy:
   api_key:
     secure: "r7eqfswAuocPtu9P479J8dXOGeeIyrKz0UkagVPLOeKAor0KsxEpilxtIN/15F02Wmt0AstVl9YGLEcBEA4xUwECvrCqr9ot/PcAr3/9UB7oPeqQQy6OsOMcgLzrYryDb33AfuyB32lXuN7W8FNQz8z+OXsrVcgFiPfELM1oxgQ1ktjxY0FBs74O1sShKoGdwinumT0Dwc07vGcaclz6iqxkCdPQpsjtxbAnsway/NM4vQWRBEbyOiIQ8Y+C/kWxqC8Y5kjtni48WcsoWCUdn5iNrT7LDXAf+SZC3ubIRI/I4B50r45zjgxNXMVskbvBwUocpqUmJQsH5w3HnSyuVxBProGo0exC5f8s4/M+KmYqp1cipBIuqv/sofEvi7Qs9TRFXURjtOkMv4QqSqCctn2vSX/WYcWRS7P06pCRfcGCb7zcm1RCrHTuHJoiCVfEMJy3xdyCzGLlthu+t5cSPfjwvQLyeWCeEKp9JTGaubUwF+nU1UYsbibFWt7X/UFM8q5z4Wx3Mw3PSjS+lV31+CQlDllr35dv41zWBFSvWpz7TuMS7/q2NhiXA1sCAzX5Ky6UwgdaC2pPkeULiVmYLDEycUbMuIsInZm66LVSqJ7KbzdrQF6c74NMCW3gJTPQ5pEA7LNfPhSh5rhlSzj8I5/Z9rWnniIrl2JrBx1eVaE="
   file:
-    - logshare-linux-amd64
+    - slowpoke-linux-amd64
     - slowpoke-windows-amd64.exe
-    - logshare-darwim-amd64
+    - slowpoke-darwim-amd64
   skip_cleanup: true
   on:
     tags: true
