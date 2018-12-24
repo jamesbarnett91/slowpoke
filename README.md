@@ -1,5 +1,5 @@
 # Slowpoke
-Slowpoke is a simple TCP proxy which can introduce a configurable latency between packet transfers.
+Slowpoke is a simple TCP proxy which can introduce configurable latency between packet delivery.
 This allows you to test and profile how your application behaves with different levels of latency between services such as databases or caches.
 
 ## Running
