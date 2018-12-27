@@ -1,4 +1,4 @@
-package slowpoke
+package main
 
 import (
 	"io"
@@ -18,7 +18,7 @@ type Slowpoke struct {
 	logger     *logging.Logger
 }
 
-func New(conn net.Conn, targetAddr *net.TCPAddr, latency time.Duration, bufferSize int, logger *logging.Logger) *Slowpoke {
+func NewSlowpoke(conn net.Conn, targetAddr *net.TCPAddr, latency time.Duration, bufferSize int, logger *logging.Logger) *Slowpoke {
 	return &Slowpoke{
 		conn:       conn,
 		targetAddr: targetAddr,
@@ -55,25 +55,16 @@ func (s *Slowpoke) createBuffer() []byte {
 func (s *Slowpoke) transferWithLatency(source net.Conn, target net.Conn) {
 	byteBuffer := s.createBuffer()
 
-	var transferDirection string
-	// If the data source is the client then we are sending
-	if source == s.conn {
-		transferDirection = "%d bytes sent"
-	} else {
-		transferDirection = "%d bytes received"
-	}
-
 	for {
 
 		bytesRead, readError := source.Read(byteBuffer)
 
 		if bytesRead > 0 {
 
+			s.logger.Debugf("Transferring %d bytes from %s to %s with %s added latency", bytesRead, source.RemoteAddr(), target.RemoteAddr(), s.latency)
+
 			if s.latency != 0 {
-				s.logger.Debugf(transferDirection+" with latency of %s", bytesRead, s.latency)
 				time.Sleep(s.latency)
-			} else {
-				s.logger.Debugf(transferDirection, bytesRead)
 			}
 
 			bytesWritten, writeError := target.Write(byteBuffer[0:bytesRead])

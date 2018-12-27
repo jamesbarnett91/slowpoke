@@ -8,8 +8,6 @@ import (
 
 	"github.com/jessevdk/go-flags"
 	"github.com/op/go-logging"
-
-	"github.com/jamesbarnett91/slowpoke"
 )
 
 var log = logging.MustGetLogger("main")
@@ -18,7 +16,7 @@ var opts struct {
 	TargetAddress string        `short:"t" long:"target" description:"The target address in host:port form" required:"true"`
 	Port          int           `short:"p" long:"port" description:"The port Slowpoke should listen for connections on" required:"true"`
 	Verbose       []bool        `short:"v" long:"verbose" description:"Log verbosity level. -v or -vv"`
-	Latency       time.Duration `short:"l" long:"latency" default:"0ms" description:"The amount of latency to apply to data packets, specified as a number and unit. E.g. 15ms or 2s. Supported units are 'us', 'ms', 's', 'm' and 'h'"`
+	Latency       time.Duration `short:"l" long:"latency" default:"0ms" description:"The duration of latency to apply to data packets, specified as a number and unit. E.g. 15ms or 2s. Supported units are 'us', 'ms', 's', 'm' and 'h'"`
 	BufferSize    int           `short:"b" long:"buffer" default:"1500" description:"The size of the transfer buffer in bytes. Latency is applied between each buffer flush. Therefore total latency applied is equal to '(totalDataTransferred/bufferSize) * latency'"`
 }
 
@@ -86,7 +84,7 @@ func waitForClients(listener net.Listener, targetAddr *net.TCPAddr) {
 		}
 		log.Infof("Accepted connection from client %v\n", client.RemoteAddr())
 
-		s := slowpoke.New(client, targetAddr, opts.Latency, opts.BufferSize, log)
+		s := NewSlowpoke(client, targetAddr, opts.Latency, opts.BufferSize, log)
 
 		go s.StartTransfer()
 	}
