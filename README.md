@@ -1,8 +1,13 @@
 # Slowpoke
 [![Build Status](https://travis-ci.org/jamesbarnett91/slowpoke.svg?branch=master)](https://travis-ci.org/jamesbarnett91/slowpoke)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jamesbarnett91/slowpoke)](https://goreportcard.com/report/github.com/jamesbarnett91/slowpoke)
 
 Slowpoke is a simple TCP proxy which can introduce configurable latency between packet delivery.
 This allows you to test and profile how your application behaves with different levels of latency between services such as databases or caches.
+
+<p align="center">
+  <img alt="Screenshot" src="https://jamesbarnett.io/files/slowpoke/demo1.gif">
+</p>
 
 ## Running
 If you have [Golang](https://golang.org) set up, you can install slowpoke using the standard `go get`package manager
